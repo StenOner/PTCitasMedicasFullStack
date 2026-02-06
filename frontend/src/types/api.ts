@@ -110,17 +110,3 @@ const AppointmentStatus = {
 }
 
 export type AppointmentStatus = typeof AppointmentStatus[keyof typeof AppointmentStatus]
-// export enum CareType {
-//   Consulta = 1,
-//   Control = 2,
-//   Emergencia = 3,
-//   Procedimiento = 4
-// }
-
-// export enum AppointmentStatus {
-//   Programada = 1,
-//   Confirmada = 2,
-//   Cancelada = 3,
-//   Completada = 4,
-//   NoAsistio = 5
-// }
