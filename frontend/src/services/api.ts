@@ -12,7 +12,8 @@ import type {
   CareType
 } from '../types/api'
 
-const API_BASE_URL = 'https://localhost:7000/api'
+// const API_BASE_URL = 'https://localhost:7000/api'
+const API_BASE_URL = 'http://localhost:5277/api'
 
 const api = axios.create({
   baseURL: API_BASE_URL,

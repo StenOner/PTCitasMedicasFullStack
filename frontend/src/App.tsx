@@ -1,39 +1,4 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePatient } from './hooks/usePatient'
 import { PatientLogin } from './components/PatientLogin'
 import { PatientRegistration } from './components/PatientRegistration'
@@ -41,6 +6,7 @@ import { DoctorSearch } from './components/DoctorSearch'
 import { ScheduleSelector } from './components/ScheduleSelector'
 import { AppointmentBooking } from './components/AppointmentBooking'
 import { MyAppointments } from './components/MyAppointments'
+import { LogoutIcon } from './components/LogoutIcon'
 import type { DoctorDto, PatientDto, ScheduleDto } from './types/api'
 import './App.css'
 
@@ -51,6 +17,10 @@ function App() {
   const [currentView, setCurrentView] = useState<View>('login')
   const [selectedDoctor, setSelectedDoctor] = useState<DoctorDto | null>(null)
   const [selectedSchedule, setSelectedSchedule] = useState<ScheduleDto | null>(null)
+
+  useEffect(() => {
+    if (patient) setCurrentView('my-appointments')
+  }, [patient])
 
   // Navigation handlers
   const handleLoginSuccess = (patientData: PatientDto) => {
@@ -121,7 +91,7 @@ function App() {
             <div className="user-info">
               <span>Hola, {patient.firstName}</span>
               <button onClick={handleLogout} className="btn btn-link">
-                Cerrar Sesión
+                <LogoutIcon color='white' />
               </button>
             </div>
           )}
@@ -200,7 +170,8 @@ function App() {
 
       <footer className="app-footer">
         <div className="container">
-          <p>© 2026 Sistema de Citas Médicas - Desarrollado con React 19</p>
+          <p>Prueba Tecnica - Sistema de Citas Médicas</p>
+          <p>Leonardo Acevedo</p>
         </div>
       </footer>
     </div>
