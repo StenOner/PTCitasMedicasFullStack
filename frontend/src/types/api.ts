@@ -1,27 +1,18 @@
-// API Response Types
 export interface ApiResponse<T> {
   data: T
   message: string
   errors?: string[]
 }
 
-// Enums
-export enum CareType {
-  Consulta = 1,
-  Control = 2,
-  Emergencia = 3,
-  Procedimiento = 4
+export interface ApiError {
+  response?: {
+    data?: {
+      message?: string
+      errors?: string[]
+    }
+  }
 }
 
-export enum AppointmentStatus {
-  Programada = 1,
-  Confirmada = 2,
-  Cancelada = 3,
-  Completada = 4,
-  NoAsistio = 5
-}
-
-// Patient Types
 export interface CreatePatientDto {
   documentNumber: string
   firstName: string
@@ -44,14 +35,12 @@ export interface PatientDto {
   address: string
 }
 
-// Specialty Types
 export interface SpecialtyDto {
   id: number
   name: string
   description: string
 }
 
-// Doctor Types
 export interface DoctorDto {
   id: number
   licenseNumber: string
@@ -66,7 +55,6 @@ export interface DoctorDto {
   careTypeName: string
 }
 
-// Schedule Types
 export interface ScheduleDto {
   id: number
   doctorId: number
@@ -78,7 +66,6 @@ export interface ScheduleDto {
   timeRange: string
 }
 
-// Appointment Types
 export interface CreateAppointmentDto {
   patientId: number
   scheduleId: number
@@ -105,3 +92,35 @@ export interface AppointmentDto {
 export interface CancelAppointmentDto {
   cancellationReason: string
 }
+const CareType = {
+  Consulta: 1,
+  Control: 2,
+  Emergencia: 3,
+  Procedimiento: 4
+} as const
+
+export type CareType = typeof CareType[keyof typeof CareType]
+
+const AppointmentStatus = {
+  Programada: 1,
+  Confirmada: 2,
+  Cancelada: 3,
+  Completada: 4,
+  NoAsistio: 5
+}
+
+export type AppointmentStatus = typeof AppointmentStatus[keyof typeof AppointmentStatus]
+// export enum CareType {
+//   Consulta = 1,
+//   Control = 2,
+//   Emergencia = 3,
+//   Procedimiento = 4
+// }
+
+// export enum AppointmentStatus {
+//   Programada = 1,
+//   Confirmada = 2,
+//   Cancelada = 3,
+//   Completada = 4,
+//   NoAsistio = 5
+// }

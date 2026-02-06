@@ -17,7 +17,7 @@ export const usePatient = () => {
     }
   }, [patient])
 
-  const login = (patientData: any) => {
+  const login = (patientData: PatientDto) => {
     setPatient(patientData)
   }
 

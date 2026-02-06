@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { specialtyService, doctorService } from '../services/api'
-import type { SpecialtyDto, DoctorDto, CareType } from '../types/api'
+import type { SpecialtyDto, DoctorDto, CareType, ApiError } from '../types/api'
 
 interface DoctorSearchProps {
   onDoctorSelect: (doctor: DoctorDto) => void
@@ -29,7 +29,7 @@ export const DoctorSearch: React.FC<DoctorSearchProps> = ({ onDoctorSelect }) =>
     try {
       const response = await specialtyService.getAll()
       setSpecialties(response.data)
-    } catch (err) {
+    } catch {
       setError('Error al cargar especialidades')
     }
   }
@@ -48,8 +48,8 @@ export const DoctorSearch: React.FC<DoctorSearchProps> = ({ onDoctorSelect }) =>
       if (response.data.length === 0) {
         setError('No se encontraron médicos con los criterios seleccionados')
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al buscar médicos')
+    } catch (err) {
+      setError((err as ApiError).response?.data?.message || 'Error al buscar médicos')
     } finally {
       setLoading(false)
     }

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { appointmentService } from '../services/api'
-import type { PatientDto, AppointmentDto, AppointmentStatus } from '../types/api'
+import type { PatientDto, AppointmentDto, AppointmentStatus, ApiError } from '../types/api'
 import { format, parseISO, isPast } from 'date-fns'
 import { es } from 'date-fns/locale'
 
@@ -31,25 +31,24 @@ export const MyAppointments: React.FC<MyAppointmentsProps> = ({ patient, onNewAp
   const [error, setError] = useState<string | null>(null)
   const [cancellingId, setCancellingId] = useState<number | null>(null)
   const [cancelReason, setCancelReason] = useState('')
-  const [showPast, setShowPast] = useState(false)
 
-  useEffect(() => {
-    loadAppointments()
-  }, [patient.id, showPast])
-
-  const loadAppointments = async () => {
+  const loadAppointments = useCallback(async () => {
     setLoading(true)
     setError(null)
 
     try {
-      const response = await appointmentService.getPatientAppointments(patient.id, showPast)
+      const response = await appointmentService.getPatientAppointments(patient.id)
       setAppointments(response.data)
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al cargar citas')
+    } catch (err) {
+      setError((err as ApiError).response?.data?.message || 'Error al cargar citas')
     } finally {
       setLoading(false)
     }
-  }
+  }, [patient.id])
+
+  useEffect(() => {
+    loadAppointments()
+  }, [loadAppointments])
 
   const handleCancelClick = (appointmentId: number) => {
     setCancellingId(appointmentId)
@@ -67,8 +66,8 @@ export const MyAppointments: React.FC<MyAppointmentsProps> = ({ patient, onNewAp
       setCancellingId(null)
       setCancelReason('')
       loadAppointments()
-    } catch (err: any) {
-      alert(err.response?.data?.message || 'Error al cancelar la cita')
+    } catch (err) {
+      alert((err as ApiError).response?.data?.message || 'Error al cancelar la cita')
     }
   }
 
@@ -101,26 +100,12 @@ export const MyAppointments: React.FC<MyAppointmentsProps> = ({ patient, onNewAp
         </button>
       </div>
 
-      <div className="appointments-filters">
-        <label className="checkbox-label">
-          <input
-            type="checkbox"
-            checked={showPast}
-            onChange={(e) => setShowPast(e.target.checked)}
-          />
-          Mostrar citas pasadas
-        </label>
-      </div>
-
       {loading && <div className="loading">Cargando citas...</div>}
       {error && <div className="alert alert-error">{error}</div>}
 
       {!loading && appointments.length === 0 && (
         <div className="empty-state">
-          <p>📅 No tienes citas {showPast ? '' : 'programadas'}</p>
-          <button onClick={onNewAppointment} className="btn btn-outline">
-            Agendar Primera Cita
-          </button>
+          <p>📅 No tienes citas programadas</p>
         </div>
       )}
 

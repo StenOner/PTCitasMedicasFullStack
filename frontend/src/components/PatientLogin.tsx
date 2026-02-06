@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { patientService } from '../services/api'
-import type { PatientDto } from '../types/api'
+import type { ApiError, PatientDto } from '../types/api'
 
 interface PatientLoginProps {
   onSuccess: (patient: PatientDto) => void
@@ -12,7 +12,7 @@ export const PatientLogin: React.FC<PatientLoginProps> = ({ onSuccess, onRegiste
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
@@ -20,8 +20,8 @@ export const PatientLogin: React.FC<PatientLoginProps> = ({ onSuccess, onRegiste
     try {
       const response = await patientService.getByDocument(documentNumber)
       onSuccess(response.data)
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Paciente no encontrado')
+    } catch (err) {
+      setError((err as ApiError).response?.data?.message || 'Paciente no encontrado')
     } finally {
       setLoading(false)
     }

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { appointmentService } from '../services/api'
-import type { DoctorDto, ScheduleDto, PatientDto, CreateAppointmentDto } from '../types/api'
+import type { DoctorDto, ScheduleDto, PatientDto, CreateAppointmentDto, ApiError } from '../types/api'
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 
@@ -44,8 +44,8 @@ export const AppointmentBooking: React.FC<AppointmentBookingProps> = ({
     try {
       await appointmentService.create(appointmentData)
       onSuccess()
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.message || 'Error al reservar la cita'
+    } catch (err) {
+      const errorMessage = (err as ApiError).response?.data?.message || 'Error al reservar la cita'
       setError(errorMessage)
     } finally {
       setLoading(false)

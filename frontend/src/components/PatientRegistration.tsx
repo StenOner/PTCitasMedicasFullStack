@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { patientService } from '../services/api'
-import type { CreatePatientDto } from '../types/api'
+import type { ApiError, CreatePatientDto } from '../types/api'
 
 interface PatientRegistrationProps {
   onSuccess: (patientId: number) => void
@@ -39,8 +39,8 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ onSucc
       setTimeout(() => {
         onSuccess(response.data.id)
       }, 1500)
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al registrar paciente')
+    } catch (err) {
+      setError((err as ApiError).response?.data?.message || 'Error al registrar paciente')
     } finally {
       setLoading(false)
     }

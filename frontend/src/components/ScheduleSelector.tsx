@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { scheduleService } from '../services/api'
-import type { DoctorDto, ScheduleDto } from '../types/api'
+import type { ApiError, DoctorDto, ScheduleDto } from '../types/api'
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 
@@ -15,16 +15,12 @@ export const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   onScheduleSelect,
   onBack
 }) => {
-  const [schedules, setSchedules] = useState<ScheduleDto[]>([])
+  const [, setSchedules] = useState<ScheduleDto[]>([])
   const [groupedSchedules, setGroupedSchedules] = useState<Record<string, ScheduleDto[]>>({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    loadSchedules()
-  }, [doctor.id])
-
-  const loadSchedules = async () => {
+  const loadSchedules = useCallback(async () => {
     setLoading(true)
     setError(null)
 
@@ -52,12 +48,16 @@ export const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
       if (response.data.length === 0) {
         setError('No hay horarios disponibles para este médico en los próximos días')
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al cargar horarios')
+    } catch (err) {
+      setError((err as ApiError).response?.data?.message || 'Error al cargar horarios')
     } finally {
       setLoading(false)
     }
-  }
+  }, [doctor.id])
+
+  useEffect(() => {
+    loadSchedules()
+  }, [loadSchedules])
 
   const formatDate = (dateString: string) => {
     try {
