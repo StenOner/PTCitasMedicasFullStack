@@ -105,7 +105,7 @@ export const MyAppointments: React.FC<MyAppointmentsProps> = ({ patient, onNewAp
 
       {!loading && appointments.length === 0 && (
         <div className="empty-state">
-          <p>📅 No tienes citas programadas</p>
+          <p>No tienes citas programadas</p>
         </div>
       )}
 

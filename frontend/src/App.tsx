@@ -86,7 +86,9 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="container">
-          <h1>🏥 Sistema de Citas Médicas</h1>
+          <h1 className="cursor-pointer" onClick={() => setCurrentView('my-appointments')}>
+            Sistema de Citas Médicas
+          </h1>
           {patient && (
             <div className="user-info">
               <span>Hola, {patient.firstName}</span>
