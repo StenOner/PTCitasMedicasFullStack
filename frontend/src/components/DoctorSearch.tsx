@@ -91,7 +91,7 @@ export const DoctorSearch: React.FC<DoctorSearchProps> = ({ onDoctorSelect }) =>
           </select>
         </div>
 
-        <button onClick={handleSearch} disabled={loading} className="btn btn-primary">
+        <button className="btn btn-primary form-group" onClick={handleSearch} disabled={loading}>
           {loading ? 'Buscando...' : 'Buscar'}
         </button>
       </div>
