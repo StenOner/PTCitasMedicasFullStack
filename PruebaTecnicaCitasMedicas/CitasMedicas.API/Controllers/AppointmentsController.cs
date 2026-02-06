@@ -35,7 +35,7 @@ public class AppointmentsController : ControllerBase
             return BadRequest(new { errors = result.Errors, message = result.Errors.FirstOrDefault() });
         }
 
-        return CreatedAtAction(null, result.Data);
+        return CreatedAtAction(null, result);
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class AppointmentsController : ControllerBase
             return NotFound(new { errors = result.Errors, message = result.Errors.FirstOrDefault() });
         }
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 
     /// <summary>
@@ -86,6 +86,6 @@ public class AppointmentsController : ControllerBase
             return BadRequest(new { errors = result.Errors, message = result.Errors.FirstOrDefault() });
         }
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 }

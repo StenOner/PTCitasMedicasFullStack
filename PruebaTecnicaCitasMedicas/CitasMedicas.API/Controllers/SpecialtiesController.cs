@@ -23,6 +23,6 @@ public class SpecialtiesController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var result = await _specialityService.GetAllAsync();
-        return Ok(result.Data);
+        return Ok(result);
     }
 }

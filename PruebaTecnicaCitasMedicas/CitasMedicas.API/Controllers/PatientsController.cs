@@ -23,11 +23,6 @@ public class PatientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterPatient([FromBody] CreatePatientDto dto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
         var result = await _patientService.CreatePatientAsync(dto);
 
         if (!result.IsSuccess)
@@ -35,7 +30,7 @@ public class PatientsController : ControllerBase
             return BadRequest(new { errors = result.Errors, message = result.Errors.FirstOrDefault() });
         }
 
-        return CreatedAtAction(null, result.Data);
+        return CreatedAtAction(null, result);
     }
 
     /// <summary>
@@ -53,7 +48,7 @@ public class PatientsController : ControllerBase
             return NotFound(new { errors = result.Errors, message = result.Errors.FirstOrDefault() });
         }
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 
     /// <summary>
@@ -71,6 +66,6 @@ public class PatientsController : ControllerBase
             return NotFound(new { errors = result.Errors, message = result.Errors.FirstOrDefault() });
         }
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 }

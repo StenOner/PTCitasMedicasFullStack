@@ -33,7 +33,7 @@ public class DoctorsController : ControllerBase
 
         var result = await _doctorService.SearchDoctorsAsync(searchDto);
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 
     /// <summary>
@@ -51,6 +51,6 @@ public class DoctorsController : ControllerBase
             return NotFound(new { errors = result.Errors, message = result.Errors.FirstOrDefault() });
         }
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 }

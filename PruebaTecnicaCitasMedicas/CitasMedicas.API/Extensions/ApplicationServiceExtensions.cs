@@ -4,7 +4,6 @@ using CitasMedicas.Domain.Interfaces;
 using CitasMedicas.Infrastructure;
 using CitasMedicas.Infrastructure.Repositories;
 using FluentValidation;
-//using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CitasMedicas.API.Extensions;
@@ -41,8 +40,7 @@ public static class ApplicationServiceExtensions
 
     public static void AddValidationServices(this IServiceCollection services)
     {
-        //services.AddFluentValidationAutoValidation();
-        services.AddValidatorsFromAssemblyContaining<CreatePatientValidator>();
         services.AddValidatorsFromAssemblyContaining<CreateAppointmentValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreatePatientValidator>();
     }
 }

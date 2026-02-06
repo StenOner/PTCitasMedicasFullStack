@@ -45,6 +45,6 @@ public class SchedulesController : ControllerBase
             return BadRequest(new { errors = result.Errors, message = result.Errors.FirstOrDefault() });
         }
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 }

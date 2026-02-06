@@ -1,11 +1,15 @@
 ﻿using CitasMedicas.API.Extensions;
+using CitasMedicas.API.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureCors();
 builder.Services.AddApplicationServices();
 builder.Services.AddValidationServices();
 builder.Services.ConfigureServices(builder.Configuration);
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<FluentValidationFilter>();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -17,7 +21,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
 app.UseAuthorization();
 app.MapControllers();
